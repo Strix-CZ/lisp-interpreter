@@ -16,4 +16,4 @@ Atom is either:
 
 S-expression is either:
  - atom
- - when s1, s2 ... sn are S-expression then a list (s1 s2 ... sn) is an s-expression
+ - when s1, s2 ... sn are S-expressions then a list (s1 s2 ... sn) is an s-expression
