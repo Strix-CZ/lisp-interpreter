@@ -14,6 +14,6 @@ Atom is either:
  - number
  - atomic symbol
 
-S-expression is either:
+S-expression is:
  - atom
- - when s1, s2 ... sn are S-expressions then a list (s1 s2 ... sn) is an s-expression
+ - list (s1 s2 ... sn) given that when s1, s2 ... sn are S-expressions 
