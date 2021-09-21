@@ -4,6 +4,15 @@ public class Parser
 {
 	public Expression parse(String code)
 	{
-		return Expression.atom(code.trim());
+		String trimmed = code.trim();
+
+		if (trimmed.equals("()"))
+		{
+			return Expression.list(null, null);
+		}
+		else
+		{
+			return Expression.atom(trimmed);
+		}
 	}
 }

@@ -26,6 +26,12 @@ public class ParserTest
 		expectAtom(parser.parse("\t foo\n"), "foo");
 	}
 
+	@Test
+	void parseEmptyListTest()
+	{
+		expectEmptyList(parser.parse("()"));
+	}
+
 	private void expectAtom(Expression expression, String expectedValue)
 	{
 		Assertions.assertThat(expression.isAtom())
@@ -35,5 +41,16 @@ public class ParserTest
 		Assertions.assertThat(expression.value())
 				.as("value")
 				.isEqualTo(expectedValue);
+	}
+
+	private void expectEmptyList(Expression expression)
+	{
+		Assertions.assertThat(expression.isAtom())
+				.as("atom")
+				.isFalse();
+
+		Assertions.assertThat(expression.isEmpty())
+				.as("empty")
+				.isEqualTo(true);
 	}
 }
