@@ -1,5 +1,6 @@
 package lisp;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -18,6 +19,11 @@ public class Expression
 	public static Expression list(List<Expression> list)
 	{
 		return new Expression(list);
+	}
+
+	public static Expression emptyList()
+	{
+		return new Expression(Collections.emptyList());
 	}
 
 	public Expression(String value)

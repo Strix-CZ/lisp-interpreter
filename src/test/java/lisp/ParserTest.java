@@ -55,7 +55,7 @@ public class ParserTest
 	@Test
 	void parsingListRecursively()
 	{
-		expectList(Parser.parse("(())"), Expression.list(Collections.emptyList()));
+		expectList(Parser.parse("(())"), Expression.emptyList());
 	}
 
 	@Test
@@ -63,9 +63,9 @@ public class ParserTest
 	{
 		expectList(Parser.parse(" (+ () foo (bar()))"),
 				Expression.atom("+"),
-				Expression.list(Collections.emptyList()),
+				Expression.emptyList(),
 				Expression.atom("foo"),
-				Expression.list(List.of(Expression.atom("bar"), Expression.list(Collections.emptyList()))));
+				Expression.list(List.of(Expression.atom("bar"), Expression.emptyList())));
 	}
 
 	@Test
