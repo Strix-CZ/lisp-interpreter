@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public class Parser
 {
-	private static final String specialChars = "()";
+	private static final String specialChars = "()'";
 
 	private final String code;
 	private int position = 0;
@@ -47,6 +47,10 @@ public class Parser
 					listBody.add(parse());
 				}
 			}
+		}
+		else if (nextToken.equals("'"))
+		{
+			return Expression.list(Expression.atom("quote"), parse());
 		}
 		else
 		{
