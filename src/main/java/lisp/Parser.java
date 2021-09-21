@@ -60,7 +60,9 @@ public class Parser
 		else
 		{
 			int endPosition = find(position, (c) -> Character.isWhitespace(c) || c == '(' || c == ')');
-			return code.substring(position, endPosition);
+			String token = code.substring(position, endPosition);
+			position = endPosition;
+			return token;
 		}
 	}
 
