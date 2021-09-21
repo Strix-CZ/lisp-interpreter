@@ -12,7 +12,11 @@ public class Parser
 		{
 			if (trimmed.endsWith(")"))
 			{
-				return Expression.list(Collections.emptyList());
+				String bodyOfList = trimmed.substring(1, trimmed.length() - 1).trim();
+				return Expression.list(
+						bodyOfList.isEmpty()
+								? Collections.emptyList()
+								: Collections.singletonList(parse(bodyOfList)));
 			}
 			else
 			{

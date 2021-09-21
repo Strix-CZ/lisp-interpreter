@@ -41,6 +41,16 @@ public class ParserTest
 	}
 
 	@Test
+	void parseListWithSingleAtomTest()
+	{
+		Expression e = parser.parse("(1)");
+
+		Assertions.assertThat(e.isAtom()).as("atom").isFalse();
+		Assertions.assertThat(e.isEmpty()).as("empty").isFalse();
+		Assertions.assertThat(e.getList()).containsExactly(Expression.atom("1"));
+	}
+
+	@Test
 	void whiteSpaceDoesNotMatterForEmptyList()
 	{
 		expectEmptyList(parser.parse(" (  ) "));
