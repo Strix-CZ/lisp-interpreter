@@ -3,9 +3,6 @@ package lisp;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.List;
-
 public class ParserTest
 {
 	@Test
@@ -92,7 +89,7 @@ public class ParserTest
 	void emptylistShorthandTest()
 	{
 		Assertions.assertThat(Parser.parse("(list)"))
-			.isEqualTo(Parser.parse("'()"));
+				.isEqualTo(Parser.parse("'()"));
 	}
 
 	@Test
