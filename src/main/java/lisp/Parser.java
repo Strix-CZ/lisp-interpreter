@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 public class Parser
 {
+	private static final String specialChars = "()";
+
 	private final String code;
 	private int position = 0;
 
@@ -61,18 +63,23 @@ public class Parser
 
 		char currentChar = code.charAt(position);
 
-		if (currentChar == '(' || currentChar == ')')
+		if (isSpecialCharacter(currentChar))
 		{
 			position++;
 			return Character.toString(currentChar);
 		}
 		else
 		{
-			int endPosition = find(position, (c) -> Character.isWhitespace(c) || c == '(' || c == ')');
+			int endPosition = find(position, (c) -> Character.isWhitespace(c) || isSpecialCharacter(c));
 			String token = code.substring(position, endPosition);
 			position = endPosition;
 			return token;
 		}
+	}
+
+	private boolean isSpecialCharacter(char c)
+	{
+		return specialChars.contains(Character.toString(c));
 	}
 
 	private void putBackToken(String token)
