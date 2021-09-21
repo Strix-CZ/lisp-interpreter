@@ -27,26 +27,7 @@ public class Parser
 
 		if (nextToken.equals("("))
 		{
-			List<Expression> listBody = new ArrayList<>();
-
-			while (true)
-			{
-				String potentialEndParentheses = readNextToken();
-
-				if (potentialEndParentheses.isEmpty())
-				{
-					throw new SyntaxError("Missing right parentheses\n" + code);
-				}
-				else if (potentialEndParentheses.equals(")"))
-				{
-					return Expression.list(listBody);
-				}
-				else
-				{
-					putBackToken(potentialEndParentheses);
-					listBody.add(parse());
-				}
-			}
+			return parseList();
 		}
 		else if (nextToken.equals("'"))
 		{
@@ -55,6 +36,30 @@ public class Parser
 		else
 		{
 			return Expression.atom(nextToken);
+		}
+	}
+
+	private Expression parseList()
+	{
+		List<Expression> listBody = new ArrayList<>();
+
+		while (true)
+		{
+			String potentialEndParentheses = readNextToken();
+
+			if (potentialEndParentheses.isEmpty())
+			{
+				throw new SyntaxError("Missing right parentheses\n" + code);
+			}
+			else if (potentialEndParentheses.equals(")"))
+			{
+				return Expression.list(listBody);
+			}
+			else
+			{
+				putBackToken(potentialEndParentheses);
+				listBody.add(parse());
+			}
 		}
 	}
 
