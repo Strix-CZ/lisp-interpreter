@@ -17,11 +17,16 @@ public class ParserTest
 	@Test
 	void parseAtomTest()
 	{
-		Expression expression = parser.parse("1");
-		expectAtom(expression);
+		expectAtom(parser.parse("1"), "1");
 	}
 
-	private void expectAtom(Expression expression)
+	@Test
+	void whitespaceIsNotIncludedInAtom()
+	{
+		expectAtom(parser.parse("\t foo\n"), "foo");
+	}
+
+	private void expectAtom(Expression expression, String expectedValue)
 	{
 		Assertions.assertThat(expression.isAtom())
 				.as("atom")
@@ -29,6 +34,6 @@ public class ParserTest
 
 		Assertions.assertThat(expression.value())
 				.as("value")
-				.isEqualTo("1");
+				.isEqualTo(expectedValue);
 	}
 }
