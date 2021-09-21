@@ -88,6 +88,20 @@ public class ParserTest
 				.hasMessageContaining("Missing right parentheses");
 	}
 
+	@Test
+	void emptylistShorthandTest()
+	{
+		Assertions.assertThat(Parser.parse("(list)"))
+			.isEqualTo(Parser.parse("'()"));
+	}
+
+	@Test
+	void listShorthandTest()
+	{
+		Assertions.assertThat(Parser.parse("(list a b c)"))
+				.isEqualTo(Parser.parse("(cons a (cons b (cons c '())))"));
+	}
+
 	private void expectAtom(Expression expression, String expectedValue)
 	{
 		Assertions.assertThat(expression.isAtom())

@@ -45,22 +45,45 @@ public class Parser
 
 		while (true)
 		{
-			String potentialEndParentheses = readNextToken();
+			String potentialRightParentheses = readNextToken();
 
-			if (potentialEndParentheses.isEmpty())
+			if (potentialRightParentheses.isEmpty())
 			{
 				throw new SyntaxError("Missing right parentheses\n" + code);
 			}
-			else if (potentialEndParentheses.equals(")"))
+			else if (potentialRightParentheses.equals(")"))
 			{
-				return Expression.list(listBody);
+				if (!listBody.isEmpty() && listBody.get(0).equals(Expression.atom("list")))
+				{
+					return rewriteListToCons(listBody);
+				}
+				else
+				{
+					return Expression.list(listBody);
+				}
 			}
 			else
 			{
-				putBackToken(potentialEndParentheses);
+				putBackToken(potentialRightParentheses);
 				listBody.add(parse());
 			}
 		}
+	}
+
+	/**
+	 * Translates (list e1 ... en)
+	 * into (cons e1 ... (cons en '()) ... ).
+	 */
+	private Expression rewriteListToCons(List<Expression> listBody)
+	{
+		Expression expression = Expression.list(Expression.atom("quote"), Expression.list());
+
+		for (int i = listBody.size() - 1; i >= 1; --i)
+		{
+			expression = Expression.list(Expression.atom("cons"), listBody.get(i), expression);
+		}
+
+		return expression;
 	}
 
 	public String readNextToken()

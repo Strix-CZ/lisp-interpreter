@@ -97,7 +97,7 @@ public class Expression
 	{
 		if (list != null)
 		{
-			return "(" + list.stream().map(Expression::toString).collect(Collectors.joining(", ")) + ")";
+			return "(" + list.stream().map(Expression::toString).collect(Collectors.joining(" ")) + ")";
 		}
 		else
 		{
