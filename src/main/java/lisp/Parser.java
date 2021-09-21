@@ -1,6 +1,7 @@
 package lisp;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 public class Parser
@@ -24,19 +25,26 @@ public class Parser
 
 		if (nextToken.equals("("))
 		{
-			String optionalAtom = readNextToken();
-			if (optionalAtom.equals(")"))
-			{
-				return Expression.list(Collections.emptyList());
-			}
+			List<Expression> listBody = new ArrayList<>();
 
-			String endParentheses = readNextToken();
-			if (!endParentheses.equals(")"))
+			while (true)
 			{
-				throw new SyntaxError("Missing right parentheses\n" + code);
-			}
+				String potentialEndParentheses = readNextToken();
 
-			return Expression.list(Collections.singletonList(Expression.atom(optionalAtom)));
+				if (potentialEndParentheses.isEmpty())
+				{
+					throw new SyntaxError("Missing right parentheses\n" + code);
+				}
+				else if (potentialEndParentheses.equals(")"))
+				{
+					return Expression.list(listBody);
+				}
+				else
+				{
+					putBackToken(potentialEndParentheses);
+					listBody.add(parse());
+				}
+			}
 		}
 		else
 		{
@@ -46,9 +54,10 @@ public class Parser
 
 	public String readNextToken()
 	{
-		position = skip(position, Character::isWhitespace);
 		if (position >= code.length())
 			return "";
+
+		skipWhitespace();
 
 		char currentChar = code.charAt(position);
 
@@ -66,9 +75,14 @@ public class Parser
 		}
 	}
 
-	public int skip(int startingPosition, Function<Character, Boolean> predicate)
+	private void putBackToken(String token)
 	{
-		return find(startingPosition, (c) -> !predicate.apply(c));
+		position -= token.length();
+	}
+
+	private void skipWhitespace()
+	{
+		position = find(position, (c) -> !Character.isWhitespace(c));
 	}
 
 	public int find(int startingPosition, Function<Character, Boolean> predicate)

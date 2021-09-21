@@ -3,6 +3,10 @@ package lisp;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class ParserTest
 {
 	@Test
@@ -41,6 +45,28 @@ public class ParserTest
 	void whiteSpaceDoesNotMatterForEmptyList()
 	{
 		expectEmptyList(Parser.parse(" (  ) "));
+	}
+
+	@Test
+	void parseListWithTwoAtomsTest()
+	{
+		expectList(Parser.parse("(1 foo)"), Expression.atom("1"), Expression.atom("foo"));
+	}
+
+	@Test
+	void parsingListRecursively()
+	{
+		expectList(Parser.parse("(())"), Expression.list(Collections.emptyList()));
+	}
+
+	@Test
+	void parsingComplicatedListTest()
+	{
+		expectList(Parser.parse(" (+ () foo (bar()))"),
+				Expression.atom("+"),
+				Expression.list(Collections.emptyList()),
+				Expression.atom("foo"),
+				Expression.list(List.of(Expression.atom("bar"), Expression.list(Collections.emptyList()))));
 	}
 
 	private void expectAtom(Expression expression, String expectedValue)
