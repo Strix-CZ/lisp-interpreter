@@ -1,37 +1,36 @@
 package lisp;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Expression
 {
 	private final boolean isAtom;
 	private final String value;
-
-	private final Expression car;
-	private final Expression cdr;
+	private final List<Expression> list;
 
 	public static Expression atom(String value)
 	{
 		return new Expression(value);
 	}
 
-	public static Expression list(Expression car, Expression cdr)
+	public static Expression list(List<Expression> list)
 	{
-		return new Expression(car, cdr);
+		return new Expression(list);
 	}
 
 	public Expression(String value)
 	{
 		this.isAtom = true;
 		this.value = value;
-		this.car = null;
-		this.cdr = null;
+		this.list = null;
 	}
 
-	public Expression(Expression car, Expression cdr)
+	public Expression(List<Expression> list)
 	{
 		this.isAtom = false;
 		this.value = null;
-		this.car = car;
-		this.cdr = cdr;
+		this.list = list;
 	}
 
 	public boolean isAtom()
@@ -41,21 +40,48 @@ public class Expression
 
 	public String value()
 	{
+		if (!isAtom())
+		{
+			throw new RuntimeException("The expression is not an atom");
+		}
+
 		return value;
 	}
 
 	public boolean isEmpty()
 	{
-		return car == null;
+		if (list == null)
+		{
+			throw new RuntimeException("The expression is not a list");
+		}
+
+		return list.isEmpty();
 	}
 
-	public Expression car()
+	public List<Expression> getList()
 	{
-		return car;
+		if (list == null)
+		{
+			throw new RuntimeException("The expression is not a list");
+		}
+
+		return List.copyOf(list);
 	}
 
-	public Expression cdr()
+	@Override
+	public boolean equals(Object o)
 	{
-		return cdr;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Expression that = (Expression) o;
+		return isAtom == that.isAtom && Objects.equals(value, that.value) && Objects.equals(list, that.list);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(isAtom, value, list);
 	}
 }

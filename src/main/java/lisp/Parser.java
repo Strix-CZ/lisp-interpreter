@@ -1,5 +1,7 @@
 package lisp;
 
+import java.util.Collections;
+
 public class Parser
 {
 	public Expression parse(String code)
@@ -10,9 +12,10 @@ public class Parser
 		{
 			if (trimmed.endsWith(")"))
 			{
-				return Expression.list(null, null);
+				return Expression.list(Collections.emptyList());
 			}
-			else {
+			else
+			{
 				throw new SyntaxError("Missing right parentheses\n" + code);
 			}
 		}
