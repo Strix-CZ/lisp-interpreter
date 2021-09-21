@@ -8,7 +8,13 @@ public class Parser
 
 		if (trimmed.startsWith("("))
 		{
-			return Expression.list(null, null);
+			if (trimmed.endsWith(")"))
+			{
+				return Expression.list(null, null);
+			}
+			else {
+				throw new SyntaxError("Missing right parentheses\n" + code);
+			}
 		}
 		else
 		{

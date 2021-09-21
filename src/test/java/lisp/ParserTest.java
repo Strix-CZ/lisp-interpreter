@@ -33,6 +33,14 @@ public class ParserTest
 	}
 
 	@Test
+	void leftBracketWithoutRightIsSyntaxError()
+	{
+		Assertions.assertThatThrownBy(() -> parser.parse("("))
+				.isInstanceOf(SyntaxError.class)
+				.hasMessageContaining("Missing right parentheses");
+	}
+
+	@Test
 	void whiteSpaceDoesNotMatterForEmptyList()
 	{
 		expectEmptyList(parser.parse(" (  ) "));
