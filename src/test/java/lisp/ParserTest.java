@@ -43,11 +43,7 @@ public class ParserTest
 	@Test
 	void parseListWithSingleAtomTest()
 	{
-		Expression e = parser.parse("(1)");
-
-		Assertions.assertThat(e.isAtom()).as("atom").isFalse();
-		Assertions.assertThat(e.isEmpty()).as("empty").isFalse();
-		Assertions.assertThat(e.getList()).containsExactly(Expression.atom("1"));
+		expectList(parser.parse("(1)"), Expression.atom("1"));
 	}
 
 	@Test
@@ -76,5 +72,12 @@ public class ParserTest
 		Assertions.assertThat(expression.isEmpty())
 				.as("empty")
 				.isEqualTo(true);
+	}
+
+	private void expectList(Expression e, Expression... listBody)
+	{
+		Assertions.assertThat(e.isAtom()).as("atom").isFalse();
+		Assertions.assertThat(e.isEmpty()).as("empty").isFalse();
+		Assertions.assertThat(e.getList()).containsExactly(listBody);
 	}
 }

@@ -2,6 +2,7 @@ package lisp;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Expression
 {
@@ -83,5 +84,18 @@ public class Expression
 	public int hashCode()
 	{
 		return Objects.hash(isAtom, value, list);
+	}
+
+	@Override
+	public String toString()
+	{
+		if (list != null)
+		{
+			return "(" + list.stream().map(Expression::toString).collect(Collectors.joining(", ")) + ")";
+		}
+		else
+		{
+			return value;
+		}
 	}
 }
