@@ -1,10 +1,12 @@
 package lisp;
 
 import java.util.Collections;
+import java.util.function.Function;
 
 public class Parser
 {
 	private final String code;
+	private int position = 0;
 
 	public Parser(String code)
 	{
@@ -18,26 +20,64 @@ public class Parser
 
 	public Expression parse()
 	{
-		String trimmed = code.trim();
+		String nextToken = readNextToken();
 
-		if (trimmed.startsWith("("))
+		if (nextToken.equals("("))
 		{
-			if (trimmed.endsWith(")"))
+			String optionalAtom = readNextToken();
+			if (optionalAtom.equals(")"))
 			{
-				String bodyOfList = trimmed.substring(1, trimmed.length() - 1).trim();
-				return Expression.list(
-						bodyOfList.isEmpty()
-								? Collections.emptyList()
-								: Collections.singletonList(parse(bodyOfList)));
+				return Expression.list(Collections.emptyList());
 			}
-			else
+
+			String endParentheses = readNextToken();
+			if (!endParentheses.equals(")"))
 			{
 				throw new SyntaxError("Missing right parentheses\n" + code);
 			}
+
+			return Expression.list(Collections.singletonList(Expression.atom(optionalAtom)));
 		}
 		else
 		{
-			return Expression.atom(trimmed);
+			return Expression.atom(nextToken);
 		}
+	}
+
+	public String readNextToken()
+	{
+		position = skip(position, Character::isWhitespace);
+		if (position >= code.length())
+			return "";
+
+		char currentChar = code.charAt(position);
+
+		if (currentChar == '(' || currentChar == ')')
+		{
+			position++;
+			return Character.toString(currentChar);
+		}
+		else
+		{
+			int endPosition = find(position, (c) -> Character.isWhitespace(c) || c == '(' || c == ')');
+			return code.substring(position, endPosition);
+		}
+	}
+
+	public int skip(int startingPosition, Function<Character, Boolean> predicate)
+	{
+		return find(startingPosition, (c) -> !predicate.apply(c));
+	}
+
+	public int find(int startingPosition, Function<Character, Boolean> predicate)
+	{
+		int nextPosition = startingPosition;
+
+		while (nextPosition < code.length() && !predicate.apply(code.charAt(nextPosition)))
+		{
+			nextPosition++;
+		}
+
+		return nextPosition;
 	}
 }
