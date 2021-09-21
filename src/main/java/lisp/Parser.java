@@ -6,7 +6,7 @@ public class Parser
 	{
 		String trimmed = code.trim();
 
-		if (trimmed.equals("()"))
+		if (trimmed.startsWith("("))
 		{
 			return Expression.list(null, null);
 		}

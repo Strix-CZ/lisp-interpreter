@@ -32,6 +32,12 @@ public class ParserTest
 		expectEmptyList(parser.parse("()"));
 	}
 
+	@Test
+	void whiteSpaceDoesNotMatterForEmptyList()
+	{
+		expectEmptyList(parser.parse(" (  ) "));
+	}
+
 	private void expectAtom(Expression expression, String expectedValue)
 	{
 		Assertions.assertThat(expression.isAtom())
