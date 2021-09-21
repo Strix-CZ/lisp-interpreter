@@ -3,7 +3,6 @@ package lisp;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,6 +66,14 @@ public class ParserTest
 				Expression.list(Collections.emptyList()),
 				Expression.atom("foo"),
 				Expression.list(List.of(Expression.atom("bar"), Expression.list(Collections.emptyList()))));
+	}
+
+	@Test
+	void missingRightParenthesesInComplicatedListTest()
+	{
+		Assertions.assertThatThrownBy(() -> Parser.parse("( (foo ) "))
+				.isInstanceOf(SyntaxError.class)
+				.hasMessageContaining("Missing right parentheses");
 	}
 
 	private void expectAtom(Expression expression, String expectedValue)

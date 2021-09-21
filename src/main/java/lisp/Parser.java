@@ -54,10 +54,10 @@ public class Parser
 
 	public String readNextToken()
 	{
+		skipWhitespace();
+
 		if (position >= code.length())
 			return "";
-
-		skipWhitespace();
 
 		char currentChar = code.charAt(position);
 
