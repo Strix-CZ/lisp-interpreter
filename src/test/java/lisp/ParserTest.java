@@ -1,41 +1,32 @@
 package lisp;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ParserTest
 {
-	private Parser parser;
-
-	@BeforeEach
-	void setUp()
-	{
-		parser = new Parser();
-	}
-
 	@Test
 	void parseAtomTest()
 	{
-		expectAtom(parser.parse("1"), "1");
+		expectAtom(Parser.parse("1"), "1");
 	}
 
 	@Test
 	void whitespaceIsNotIncludedInAtom()
 	{
-		expectAtom(parser.parse("\t foo\n"), "foo");
+		expectAtom(Parser.parse("\t foo\n"), "foo");
 	}
 
 	@Test
 	void parseEmptyListTest()
 	{
-		expectEmptyList(parser.parse("()"));
+		expectEmptyList(Parser.parse("()"));
 	}
 
 	@Test
 	void leftBracketWithoutRightIsSyntaxError()
 	{
-		Assertions.assertThatThrownBy(() -> parser.parse("("))
+		Assertions.assertThatThrownBy(() -> Parser.parse("("))
 				.isInstanceOf(SyntaxError.class)
 				.hasMessageContaining("Missing right parentheses");
 	}
@@ -43,13 +34,13 @@ public class ParserTest
 	@Test
 	void parseListWithSingleAtomTest()
 	{
-		expectList(parser.parse("(1)"), Expression.atom("1"));
+		expectList(Parser.parse("(1)"), Expression.atom("1"));
 	}
 
 	@Test
 	void whiteSpaceDoesNotMatterForEmptyList()
 	{
-		expectEmptyList(parser.parse(" (  ) "));
+		expectEmptyList(Parser.parse(" (  ) "));
 	}
 
 	private void expectAtom(Expression expression, String expectedValue)

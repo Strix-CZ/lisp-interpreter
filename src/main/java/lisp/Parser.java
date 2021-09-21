@@ -4,7 +4,19 @@ import java.util.Collections;
 
 public class Parser
 {
-	public Expression parse(String code)
+	private final String code;
+
+	public Parser(String code)
+	{
+		this.code = code;
+	}
+
+	public static Expression parse(String code)
+	{
+		return new Parser(code).parse();
+	}
+
+	public Expression parse()
 	{
 		String trimmed = code.trim();
 
