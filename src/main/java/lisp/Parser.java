@@ -21,6 +21,25 @@ public class Parser
 		return new Parser(code).parse();
 	}
 
+	public static List<Expression> parseMultiple(String code)
+	{
+		return new Parser(code).parseMultiple();
+	}
+
+	private List<Expression> parseMultiple()
+	{
+		List<Expression> expressions = new ArrayList<>();
+		while (true)
+		{
+			String nextToken = readNextToken();
+			if (nextToken.isEmpty())
+				return expressions;
+
+			putBackToken(nextToken);
+			expressions.add(parse());
+		}
+	}
+
 	public Expression parse()
 	{
 		String nextToken = readNextToken();

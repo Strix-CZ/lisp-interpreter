@@ -99,6 +99,13 @@ public class ParserTest
 				.isEqualTo(Parser.parse("(cons a (cons b (cons c '())))"));
 	}
 
+	@Test
+	void parseMultipleTest()
+	{
+		Assertions.assertThat(Parser.parseMultiple("(a b) (c d)"))
+			.containsExactly(Parser.parse("(a b)"), Parser.parse("(c d)"));
+	}
+
 	private void expectAtom(Expression expression, String expectedValue)
 	{
 		Assertions.assertThat(expression.isAtom())
