@@ -1,5 +1,9 @@
 package lisp;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -23,6 +27,12 @@ public class Parser
 
 	public static List<Expression> parseMultiple(String code)
 	{
+		return new Parser(code).parseMultiple();
+	}
+
+	public static List<Expression> parseFile(Path file) throws IOException
+	{
+		String code = Files.readString(Paths.get(file.toString()));
 		return new Parser(code).parseMultiple();
 	}
 
